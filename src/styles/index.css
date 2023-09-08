@@ -1,12 +1,83 @@
+h1.title {
+	text-align: center;
+	color: black;
+	letter-spacing: 2px;
+}
+h1.todo-header {
+	color: gray;
+	margin: 0 0 1em 0;
+	padding: 10px 20px;
+	text-transform: uppercase;
+	font-size: 2em;
+	font-weight: 400;
+}
 
-/* 
+ul {
+	cursor: pointer;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
 
-    You can write your own styles here...
-    
-    
-    ...Or you can use the import command to include 
-    other sylesheets into your bunde as well, e.j:
-    
-    import 'relative/path/to/stylesheet.scss';
+li {
+	background: lightgray;
+	padding-left: 10px;
+	line-height: 2em;
+	margin: 0;
+	color: #313030;
+}
 
-*/
+li:nth-child(2n) {
+	background: rgb(147, 147, 147);
+    color: whitesmoke;
+}
+
+li.clicked {
+	color: gray;
+	text-decoration: line-through;
+}
+
+div .todo-wrapper {
+    border-radius: 20px;
+}
+
+input#addToDo {
+	font-size: 18px;
+	background: lightgray;
+	border: 2px solid gray;
+	width: 100%;
+	padding: 10px 10px 10px 20px;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-border-box: border-box;
+}
+
+input#addToDo:focus {
+	background: white;
+	outline: none;
+	transition: 0.1s;
+}
+
+i.fa-trash {
+	margin: 0px;
+	padding: 0px;
+	color: #bb2a2a;
+}
+
+span {
+	height: 35px;
+	width: 0;
+	margin-right: 10px;
+	margin-left: -10px;
+	text-align: center;
+	display: inline-block;
+	color: white;
+	opacity: 0;
+	transition: 0.2s ease-in;
+}
+
+li:hover span {
+	opacity: 1;
+	width: 40px;
+	transition: 0.2s ease-in;
+}
