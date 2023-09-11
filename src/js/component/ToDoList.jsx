@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from "react";
 import ListItem from "./ListItem";
 
-//create your first component
 const ToDoList = () => {
+
+	async function fetchTasks() {
+		const response = await fetch("https://playground.4geeks.com/apis/fake/todos/user/afonso-bernardes")
+		const taskItemsJson = await response.json();
+		return taskItemsJson.map( task => task["taskLabel"] );
+	};
 
 	const [inputValue, setInputValue] = useState("");
 	const [tasks, setTasks] = useState([])
