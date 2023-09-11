@@ -9,8 +9,16 @@ const ToDoList = () => {
 
 	async function enterInput(event) {
 		if (event.key === "Enter" && inputValue) {
-			setTasks([...tasks, {"done": false, "id": currentTasks.length, "label": inputValue}])
-			setInputValue("")
+			fetch(`https://playground.4geeks.com/apis/fake/todos/user/${user}`, {
+      		method: "PUT",
+      		body: JSON.stringify([...tasks, {"done": false, "id": tasks.length, "label": inputValue}]),
+      		headers: {
+        		"Content-Type": "application/json"
+      		}
+    	});
+
+		setTasks([...tasks, {"done": false, "id": tasks.length, "label": inputValue}])
+		setInputValue("")
 		};
 	};
 
