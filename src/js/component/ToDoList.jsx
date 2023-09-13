@@ -9,33 +9,28 @@ const ToDoList = () => {
 
 	async function enterInput(event) {
 		if (event.key === "Enter" && inputValue) {
-			fetch(`https://playground.4geeks.com/apis/fake/todos/user/${user}`, {
-      		method: "PUT",
-      		body: JSON.stringify([...tasks, {"done": false, "id": tasks.length, "label": inputValue}]),
-      		headers: {
-        		"Content-Type": "application/json"
-      		}
-    	});
-
-		setTasks([...tasks, {"done": false, "id": tasks.length, "label": inputValue}])
-		setInputValue("")
+			setTasks([...tasks, {"done": false, "label": inputValue}])
+			setInputValue("")
 		};
 	};
 
 	const deleteItem = (event) => {
 		let position = parseInt(event.target.getAttribute("data-remove-id"));
+		setTasks(tasks.filter((element, index) => index !== position))
+	};
 
+	/* Update database when tasks are changed.*/
+	useEffect(() => {
 		fetch(`https://playground.4geeks.com/apis/fake/todos/user/${user}`, {
       		method: "PUT",
-      		body: JSON.stringify(tasks.filter((element) => element["id"] !== position)),
+      		body: JSON.stringify(tasks),
       		headers: {
         		"Content-Type": "application/json"
       		}
 		});
+	}, [tasks])
 
-		setTasks(tasks.filter((element) => element["id"] !== position))
-	};
-
+	/* Try to fecth user's task. If user does not exist, creat it; if it already exist, GET the user's tasks and update useState. */
 	useEffect(() => {
 		const fetchTaskList = async () => {
 			/* Fetch user's list of task. Translate and return response in json format. */
@@ -74,8 +69,8 @@ const ToDoList = () => {
 				<input id="addToDo" type="text" placeholder="Add to do here" onKeyDown={enterInput} onChange={(event) => setInputValue(event.target.value)} value={inputValue} />
 
 				<ul className="todo-list my-3">
-					{tasks.map((element) => {
-						return <ListItem text={element["label"]} deleteItem={deleteItem} itemIndex={element["id"]}/>
+					{tasks.map((element, index) => {
+						return <ListItem text={element["label"]} deleteItem={deleteItem} itemIndex={index} />
 					})}
 				</ul>
 
