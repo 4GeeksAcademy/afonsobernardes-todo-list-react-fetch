@@ -24,18 +24,46 @@ const ToDoList = () => {
 
 	const deleteItem = (event) => {
 		let position = parseInt(event.target.getAttribute("data-remove-id"));
+
+		fetch(`https://playground.4geeks.com/apis/fake/todos/user/${user}`, {
+      		method: "PUT",
+      		body: JSON.stringify(tasks.filter((element) => element["id"] !== position)),
+      		headers: {
+        		"Content-Type": "application/json"
+      		}
+		});
+
 		setTasks(tasks.filter((element) => element["id"] !== position))
 	};
 
 	useEffect(() => {
 		const fetchTaskList = async () => {
 			/* Fetch user's list of task. Translate and return response in json format. */
-			const response = await fetch(`https://playground.4geeks.com/apis/fake/todos/user/${user}`)
-			const taskItemsJson = await response.json();
-			setTasks(taskItemsJson); /* Should return something like [{objTask1} , {objTask2}, etc.] */
+			try {
+				const response = await fetch(`https://playground.4geeks.com/apis/fake/todos/user/${user}`)
+
+				if (!response.ok) {
+					alert(`The error status code is ${response.status} ${response.status === 404 ? `: User "${user}" does not exist!` : ""}`)
+					throw new Error(`The error status code is ${response.status} ${response.status === 404 ? `: User "${user}" does not exist!` : ""}`);
+				}
+				const taskItemsJson = await response.json();
+				setTasks(taskItemsJson); /* Should return something like [{objTask1} , {objTask2}, etc.] */
+
+			} catch (error) {
+
+				fetch(`https://playground.4geeks.com/apis/fake/todos/user/${user}`, {
+					method: "POST",
+					body: JSON.stringify([]),
+					headers: {
+						"Content-Type": "application/json"
+					}
+				});
+			}
+			
 		};
 
-		fetchTaskList();
+		fetchTaskList()
+
 	}, [])
 
 	return (
